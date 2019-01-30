@@ -12,9 +12,21 @@
 (function() {
     'use strict';
 
+    // Standard environment, appear as is in the list of environment
+    var standardEnvironments = ['PRODUCTION', 'DEMO', 'LOADTEST'];
+
+    // User with environment, each has a list named like *_LOCAL_{NAME}
+    var usersWithLocalEnvironment = ['TIM', 'GABRIEL', 'ED', 'JOE', 'MATT', 'SOWMYA', 'ANTONY', 'FRANCESCO'];
+
+    // Multiplied environment: each has 3 copies with suffix 1, 2 and 3
+    var multipliedEnvironements = ['UAT', 'AUTOTEST', 'STAGING','DEV'];
+
+    // Type of queues
+    var queueTypes = ['TAGS', 'FACTS','EVENTS', 'BACKGROUND_HIGH_PRIORITY', 'BACKGROUND_LOW_PRIORITY', 'HISTORICAL_CUSTOMERS'];
+
     var log = function log(msg, lvl = 10) {
         // The current log level: the lower the more it displays
-        var crtLvl = 10;
+        var crtLvl = 0;
         if (crtLvl < lvl && lvl < 10) console.debug(msg);
         if (lvl == 10) console.info(msg);
     }
@@ -23,21 +35,26 @@
         log('Doing the stuff', 1);
 
         var getQueueTypes = function() {
-            var types = ['TAGS', 'FACTS','EVENTS', 'BACKGROUND_HIGH_PRIORITY', 'BACKGROUND_LOW_PRIORITY', 'HISTORICAL_CUSTOMERS'];
+            log('function getQueueTypes', 1);
+            var types = queueTypes;
             return types;
         }
 
         var getQueueEnvs = function() {
-            var envs = ['PRODUCTION', 'DEMO', 'LOADTEST'];
-            var baseEnvs = ['UAT', 'AUTOTEST', 'STAGING','DEV'];
+            log('function getQueueEnvs', 1);
+            var envs = standardEnvironments.slice(0);
+            var baseEnvs = multipliedEnvironements;
+            log('Adding 4x' + baseEnvs.length + ' envs to the list', 1);
             baseEnvs.forEach(function(v){['', '2', '3', '4'].forEach(function(el){envs.push(v+el);})})
-            // baseEnvs.forEach(function(v){envs.push(v);});
-            var users = ['TIM', 'GABRIEL', 'ED', 'JOE', 'MATT', 'SOWMYA', 'ANTONY'];
+            var users = usersWithLocalEnvironment;
+            log('Adding ' + users.length + ' envs to the list', 1);
             users.forEach(function(el){envs.push('LOCAL_'+el)});
             return envs;
         }
 
+        // Find out in which list does the word belong, and return other entries from that list
         var getOtherWords = function(word) {
+            log('function getOtherWords', 1);
             var types = getQueueTypes();
             var envs = getQueueEnvs();
             var otherWords = [];
@@ -51,7 +68,9 @@
             return otherWords;
         };
 
+        // When clicking on a div.otherOption, replace within the value of input.gwt-TextBox the string in the attribute data-rpl with the clicked word
         var addSelectCopyEvent = function() {
+            log('function addSelectCopyEvent', 1);
             // Event to replace text on click
             document.addEventListener('click', function(event){
                 if (event.target.getAttribute('class') == 'otherOption') {
@@ -125,9 +144,9 @@
                         textbox.dispatchEvent(evt);
 
                         textbox.focus();
-                        log("queue name to search for " + selection, 3);
+                        log("queue name to search for: " + selection.toString(), 3);
                     } else {
-                        log("something selected but no clue what to do with it... " + selection,3);
+                        log("something selected but no clue what to do with it... " + selection.toString(), 3);
                     }
                 }
             });
@@ -271,7 +290,7 @@
 
         var readTowardRight = function(selection) {
             log('reading ', 1);
-            var limit = 200;
+            var limit = 100;
             var counter = 0;
             var wordBefore;
             selection.modify('extend', 'forward', 'character');
@@ -298,7 +317,7 @@
         }
 
         var readWord = function(selection) {
-            var limit = 20;
+            var limit = 100;
             var counter = 0;
             var candidate;
             var result;
@@ -362,23 +381,8 @@
             });
         }
 
-        // run all functions
+        // Call the function to add the eventListeners
         addSelectCopyEvent();
-        // addDropdown();
-        // watchBox();
-        // clickOnBox();
-
-/*
-        document.addEventListener('mouseup', function(event) {
-            var selection = window.getSelection().toString();
-            if (selection.length > 0 && selection.substring(0, 3) == 'MM_') {
-                // we like that selection, let's paste it in the search bar
-                var textbox = document.getElementsByClassName('gwt-TextBox')[0];
-                textbox.value = selection;
-                textbox.focus();
-            }
-        });
-*/
     }
 
     log('function doTheStuff() is defined', 1);
@@ -396,3 +400,4 @@
     })();
 
 })();
+
