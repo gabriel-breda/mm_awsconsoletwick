@@ -16,13 +16,13 @@
     var standardEnvironments = ['PRODUCTION', 'DEMO', 'LOADTEST'];
 
     // User with environment, each has a list named like *_LOCAL_{NAME}
-    var usersWithLocalEnvironment = ['TIM', 'GABRIEL', 'ED', 'JOE', 'MATT', 'SOWMYA', 'ANTONY', 'FRANCESCO'];
+    var usersWithLocalEnvironment = ['TIM', 'GABRIEL', 'ED', 'JOE', 'MATT', 'SOWMYA', 'FRANCESCO', 'ALEX', 'MIKE', 'VIET', 'TOM'];
 
     // Multiplied environment: each has 3 copies with suffix 1, 2 and 3
-    var multipliedEnvironements = ['UAT', 'AUTOTEST', 'STAGING','DEV'];
+    var multipliedEnvironements = ['UAT', 'AUTOTEST', 'STAGING','DEV', 'QA'];
 
     // Type of queues
-    var queueTypes = ['TAGS', 'FACTS','EVENTS', 'BACKGROUND_HIGH_PRIORITY', 'BACKGROUND_LOW_PRIORITY', 'HISTORICAL_CUSTOMERS'];
+    var queueTypes = ['TAGS', 'FACTS','EVENTS', 'EMAILS', 'BACKGROUND_HIGH_PRIORITY', 'BACKGROUND_LOW_PRIORITY', 'HISTORICAL_CUSTOMERS', 'REGISTRATION'];
 
     var log = function log(msg, lvl = 10) {
         // The current log level: the lower the more it displays
@@ -400,4 +400,3 @@
     })();
 
 })();
-
